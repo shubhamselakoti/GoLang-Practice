@@ -2,18 +2,21 @@ package main
 
 import (
 	"fmt"
-	"time"
+	"sync"
 )
 
-func task(i int) {
+// waitgoup cycle :: add -> done -> wait
+
+func task(i int, wg *sync.WaitGroup) {
+	defer wg.Done() // wherever function exits it runs
 	fmt.Println("Performing Task:", i)
 }
 
 func main() {
+	var wg sync.WaitGroup
 	for i := range 10 {
-		go task(i) // parallel execution // oncept of mutlithreading
+		wg.Add(1)
+		go task(i, &wg) // parallel execution // oncept of mutlithreading
 	}
-
-	time.Sleep(time.Second)
-
+	wg.Wait()
 }
