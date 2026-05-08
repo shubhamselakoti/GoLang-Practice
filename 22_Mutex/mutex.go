@@ -10,6 +10,7 @@ type post struct {
 	mu    sync.Mutex
 }
 
+// now it will allow one op at a time on views so that no overwrite happens... sync.Mutex.Lock() & sync.Mutex.Unlock()
 func (p *post) inc(wg *sync.WaitGroup) {
 	defer func() {
 		p.mu.Unlock()
